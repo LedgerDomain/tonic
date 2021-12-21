@@ -32,14 +32,24 @@ tls-roots = ["tls-roots-common", "rustls-native-certs"]
 tls-roots-common = ["tls"]
 tls-webpki-roots = ["tls-roots-common", "webpki-roots"]
 transport = [
-  "h2",
-  "hyper",
-  "tokio",
-  "tower",
-  "tracing-futures",
-  "tokio/macros",
-  "tokio/time",
-  "hyper-timeout",
+    "h2",
+    "hyper",
+    "hyper/full",
+    "tokio",
+    "tokio/net",
+    "tower",
+    "tower/balance",
+    "tracing-futures",
+    "tokio/macros",
+    "tokio/time",
+    "hyper-timeout",
+]
+client = [
+    "h2",
+    "hyper/client",
+    "hyper/http2",
+    "tokio",
+    "tower",
 ]
 
 # [[bench]]
@@ -71,9 +81,9 @@ async-trait = {version = "0.1.13", optional = true}
 
 # transport
 h2 = {version = "0.3", optional = true}
-hyper = {version = "0.14.14", features = ["full"], optional = true}
+hyper = {version = "0.14.14", default-features = false, optional = true}
 hyper-timeout = {version = "0.4", optional = true}
-tokio = {version = "1.0.1", features = ["net"], optional = true}
+tokio = {version = "1.0.1", default-features = false, optional = true}
 tokio-stream = "0.1"
 tower = {version = "0.4.7", features = ["balance", "buffer", "discover", "limit", "load", "make", "timeout", "util"], optional = true}
 tracing-futures = {version = "0.2", optional = true}
@@ -85,6 +95,9 @@ webpki-roots = {version = "0.21.1", optional = true}
 
 # compression
 flate2 = {version = "1.0", optional = true}
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen-futures = "0.4.18"
 
 [dev-dependencies]
 bencher = "0.1.5"
